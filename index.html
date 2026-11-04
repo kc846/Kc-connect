@@ -1,66 +1,528 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101010">
 <title>KC CONNECT — Um toque. Todas as conexões.</title>
 <style>
-:root{--black:#101010;--gold:#c9a85b;--cream:#f7f5ef;--muted:#777;--line:#e7e2d8}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--cream);color:#171717}
-header{background:var(--black);color:white;padding:18px max(5vw,18px);display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:3}
-.brand{font-weight:900;letter-spacing:2px;color:var(--gold);font-size:22px}.tag{font-size:10px;letter-spacing:2px;color:#ddd}
-nav{display:flex;gap:8px;flex-wrap:wrap}button,.btn{border:0;border-radius:9px;padding:11px 15px;background:var(--gold);color:#171717;font-weight:750;cursor:pointer}button.secondary,.btn.secondary{background:#292929;color:white}button.ghost{background:transparent;border:1px solid #666;color:white}
-main{max-width:1120px;margin:auto;padding:26px 18px}.hero{background:linear-gradient(125deg,#111,#28251e);color:white;border-radius:20px;padding:clamp(28px,6vw,65px);display:grid;grid-template-columns:1.3fr .7fr;gap:25px;align-items:center}
-h1{font-size:clamp(34px,6vw,58px);line-height:1.02;margin:12px 0;color:white}.gold{color:var(--gold)}p{line-height:1.6;color:inherit}.eyebrow{letter-spacing:3px;font-size:11px;color:var(--gold);font-weight:800}
-.mock{border:1px solid #6b5b37;border-radius:18px;padding:25px;text-align:center;background:linear-gradient(145deg,#242424,#090909);box-shadow:0 18px 40px #0006}.plaque{border:2px solid #b99a53;border-radius:13px;padding:28px 12px;color:#e7d4a4;max-width:240px;margin:auto}.plaque b{display:block;font-size:23px;letter-spacing:2px}.plaque small{display:block;margin:12px}
-section{margin:32px 0}.section-title{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}h2{font-size:26px;margin:0 0 8px}.muted{color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{background:white;border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:0 5px 18px #21180608}.card h3{margin:5px 0 8px}.price{font-size:27px;font-weight:850}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:13px;font-weight:700}.field input,.field select,.field textarea{width:100%;padding:12px;border:1px solid #d8d2c6;border-radius:9px;background:#fff;font:inherit}.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.check{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:11px;background:#fff;font-size:14px}.check input{accent-color:#9b792f}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.summary{background:#171717;color:white;border-radius:15px;padding:18px}.summary p{color:#ddd}.summary .price{color:var(--gold)}.hidden{display:none!important}.pill{display:inline-block;border-radius:99px;padding:5px 9px;background:#eee7d8;font-size:11px;font-weight:800}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tabs button{background:#e7e0d2}.tabs button.active{background:#171717;color:var(--gold)}.row{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:12px 0}.row:last-child{border:0}.status{font-size:11px;background:#eee;padding:5px 8px;border-radius:30px}.notice{background:#fff7df;border:1px solid #e7d39a;padding:12px;border-radius:10px;font-size:13px;line-height:1.5}footer{background:#111;color:#ddd;padding:28px;text-align:center;margin-top:45px}footer b{color:var(--gold)}
-@media(max-width:760px){header{align-items:flex-start;flex-direction:column}.hero,.two{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.checks{grid-template-columns:1fr}.mock{max-width:420px;width:100%;margin:auto}}
-</style></head>
+:root{
+  --black:#101010;
+  --dark:#191919;
+  --gold:#c9a85b;
+  --cream:#f7f5ef;
+  --white:#fff;
+  --muted:#888;
+  --line:#e8e2d7;
+  --green:#237b51;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Arial,sans-serif;
+  background:var(--cream);
+  color:#171717;
+}
+button,input,select,textarea{font:inherit}
+button{
+  border:0;
+  border-radius:10px;
+  padding:12px 18px;
+  background:var(--gold);
+  color:#171717;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+}
+button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button:disabled{opacity:.6;cursor:wait}
+a{color:inherit}
+header{
+  background:var(--black);
+  color:white;
+  padding:17px max(5vw,18px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  position:sticky;
+  top:0;
+  z-index:10;
+  box-shadow:0 5px 25px #0002;
+}
+.brand{
+  font-size:23px;
+  font-weight:950;
+  letter-spacing:2px;
+  color:var(--gold);
+}
+.tag{
+  font-size:9px;
+  letter-spacing:2px;
+  color:#ccc;
+}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav button{
+  background:transparent;
+  border:1px solid #555;
+  color:white;
+  padding:10px 13px;
+}
+nav button:hover{border-color:var(--gold);color:var(--gold)}
+main{max-width:1180px;margin:auto;padding:28px 18px}
+.hero{
+  background:linear-gradient(125deg,#101010,#29251d);
+  color:white;
+  border:1px solid #4e422b;
+  border-radius:23px;
+  padding:clamp(28px,6vw,70px);
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:30px;
+  align-items:center;
+  overflow:hidden;
+}
+.eyebrow{
+  color:var(--gold);
+  font-size:11px;
+  letter-spacing:3px;
+  font-weight:850;
+}
+h1{
+  font-size:clamp(36px,6vw,64px);
+  line-height:1.02;
+  margin:15px 0;
+  color:white;
+}
+.gold{color:var(--gold)}
+.hero p{color:#ddd;max-width:570px;line-height:1.7}
+.hero button{margin-top:12px}
+.hero-art{
+  background:radial-gradient(circle,#55472a,#161616 68%);
+  border-radius:20px;
+  padding:28px;
+  text-align:center;
+}
+.plaque{
+  border:2px solid var(--gold);
+  border-radius:16px;
+  padding:30px 15px;
+  max-width:260px;
+  margin:auto;
+  color:#ead8a9;
+  background:linear-gradient(145deg,#292929,#080808);
+  box-shadow:0 15px 35px #0009;
+}
+.plaque small{display:block;font-size:10px;letter-spacing:2px}
+.plaque b{display:block;font-size:25px;letter-spacing:2px;margin:15px 0}
+.qr{
+  width:75px;height:75px;
+  margin:15px auto;
+  display:grid;
+  place-items:center;
+  background:white;
+  color:#111;
+  font-size:48px;
+}
+section{margin:48px 0}
+.section-title{margin-bottom:22px}
+h2{font-size:29px;margin:7px 0}
+.muted{color:var(--muted);font-size:14px;line-height:1.6}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:17px;
+}
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:20px;
+  box-shadow:0 7px 25px #20170708;
+}
+.card h3{margin:5px 0 9px}
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px;
+}
+.product-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:19px;
+  padding:17px;
+  overflow:hidden;
+  box-shadow:0 8px 25px #00000009;
+}
+.product-art{
+  min-height:220px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:radial-gradient(circle at center,#49402e,#171717 70%);
+  margin-bottom:17px;
+}
+.product-plaque{
+  width:180px;
+  height:125px;
+  border:2px solid var(--gold);
+  border-radius:12px;
+  background:linear-gradient(145deg,#292929,#080808);
+  color:#ead8a9;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  box-shadow:0 15px 30px #0009;
+}
+.product-plaque strong{font-size:18px;letter-spacing:2px}
+.product-plaque small{font-size:9px;letter-spacing:2px;margin:8px}
+.product-plaque.transparent{
+  background:linear-gradient(135deg,#ffffff35,#b6b6b625);
+  backdrop-filter:blur(3px);
+  border-color:#d8c48f;
+}
+.product-price{
+  color:#171717;
+  font-size:27px;
+  font-weight:900;
+  margin:9px 0;
+}
+.product-card p{color:#777;font-size:13px;line-height:1.5}
+.product-card button{width:100%;margin-top:10px}
+.two{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  align-items:start;
+}
+.field{display:grid;gap:7px;margin:14px 0}
+.field label{font-size:13px;font-weight:750}
+.field input,.field select,.field textarea{
+  width:100%;
+  padding:13px;
+  border:1px solid #d8d2c6;
+  border-radius:10px;
+  background:white;
+  outline:none;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px #c9a85b25;
+}
+.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.check{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px;
+  background:#fff;
+  font-size:13px;
+  cursor:pointer;
+}
+.check input{accent-color:#9b792f}
+.summary{
+  background:#171717;
+  color:white;
+  border-radius:17px;
+  padding:22px;
+  position:sticky;
+  top:105px;
+}
+.summary p{color:#ddd}
+.summary .price{color:var(--gold)}
+.price{font-size:28px;font-weight:900}
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  border-bottom:1px solid #ffffff20;
+  padding:13px 0;
+}
+.row:last-child{border:0}
+.summary button{width:100%;margin-top:15px}
+.hidden{display:none!important}
+.notice{
+  background:#fff7df;
+  border:1px solid #e7d39a;
+  border-radius:11px;
+  padding:13px;
+  font-size:13px;
+  line-height:1.6;
+}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.tabs button{background:#e7e0d2}
+.tabs button.active{background:#171717;color:var(--gold)}
+.status{
+  display:inline-block;
+  background:#eee7d8;
+  padding:5px 9px;
+  border-radius:30px;
+  font-size:11px;
+  font-weight:750;
+}
+.admin-login{max-width:480px;margin:25px 0}
+.admin-actions{display:flex;gap:8px;flex-wrap:wrap}
+footer{
+  background:#101010;
+  color:#ddd;
+  padding:35px 20px;
+  text-align:center;
+  margin-top:55px;
+}
+footer b{color:var(--gold);letter-spacing:2px}
+.footer-admin{
+  margin-top:20px;
+  background:transparent;
+  border:1px solid #555;
+  color:#aaa;
+  font-size:11px;
+  padding:7px 12px;
+}
+footer small{display:block;margin-top:10px;color:#888}
+.empty{
+  text-align:center;
+  padding:25px;
+  color:#777;
+}
+@media(max-width:760px){
+  header{align-items:flex-start;flex-direction:column}
+  nav{width:100%}
+  nav button{flex:1}
+  .hero,.two{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr}
+  .product-grid{grid-template-columns:1fr}
+  .checks{grid-template-columns:1fr}
+  .summary{position:static}
+  .product-art{min-height:190px}
+}
+</style>
+</head>
 <body>
-<header><div><div class="brand">KC CONNECT</div><div class="tag">UM TOQUE. TODAS AS CONEXÕES.</div></div><nav>
-<button class="ghost" onclick="go('loja')">Loja</button><button class="ghost" onclick="go('cliente')">Área do cliente</button><button onclick="go('admin')">Admin</button>
-</nav></header>
+
+<header>
+  <div>
+    <div class="brand">KC CONNECT</div>
+    <div class="tag">UM TOQUE. TODAS AS CONEXÕES.</div>
+  </div>
+  <nav>
+    <button onclick="go('loja')">Loja</button>
+    <button onclick="go('cliente')">Área do cliente</button>
+  </nav>
+</header>
+
 <main>
+
 <div id="loja">
-<div class="hero"><div><div class="eyebrow">TECNOLOGIA QUE APROXIMA</div><h1>Sua empresa.<br><span class="gold">Mais conectada.</span></h1><p>Uma plaquinha inteligente para reunir WhatsApp, Instagram, avaliações, localização e muito mais. Aproxime o celular ou escaneie o QR Code.</p><button onclick="document.getElementById('config').scrollIntoView({behavior:'smooth'})">Monte sua plaquinha</button></div><div class="mock"><div class="plaque"><small>TOQUE PARA CONECTAR</small><b>KC CONNECT</b><div style="font-size:45px">▦</div><small>NFC • QR CODE</small></div><p class="muted">UM TOQUE. TODAS AS CONEXÕES.</p></div></div>
-<section><div class="section-title"><div><div class="eyebrow">SIMPLES E INTELIGENTE</div><h2>Como funciona</h2><div class="muted">Sua presença digital em um único lugar.</div></div></div><div class="grid"><div class="card"><h3>01 · Escolha</h3><p class="muted">Selecione as funções e o acabamento da sua placa.</p></div><div class="card"><h3>02 · Personalize</h3><p class="muted">Informe os dados do seu estabelecimento e seus links.</p></div><div class="card"><h3>03 · Conecte</h3><p class="muted">Receba uma página exclusiva com NFC e QR Code.</p></div></div></section>
-<section id="config"><div class="section-title"><div><div class="eyebrow">CONFIGURADOR</div><h2>Monte sua plaquinha</h2><div class="muted">Escolha quatro funções incluídas. As extras são calculadas automaticamente.</div></div></div>
-<div class="two"><div class="card"><h3>Quais funções deseja?</h3><div class="checks" id="functions"></div><div class="field"><label>Modelo da placa</label><select id="model" onchange="calc()"><option value="normal">Clássica</option><option value="transparent">Transparente (+ R$ 10,00)</option></select></div><div class="field"><label>Nome do estabelecimento</label><input id="business" placeholder="Ex.: Restaurante Sabor"></div><div class="field"><label>Seu WhatsApp</label><input id="phone" placeholder="(98) 99999-9999"></div><div class="field"><label>Observações (opcional)</label><textarea id="notes" rows="2" placeholder="Conte algo importante sobre seu pedido"></textarea></div></div>
-<div class="summary"><div class="eyebrow">RESUMO DO PEDIDO</div><p id="chosen">Nenhuma função selecionada.</p><div class="row"><span>Placa base</span><b id="base">R$ 49,90</b></div><div class="row"><span>Funções extras</span><b id="extras">R$ 0,00</b></div><div class="row"><span>Acabamento</span><b id="finish">R$ 0,00</b></div><div class="row"><b>Total</b><span class="price" id="total">R$ 49,90</span></div><button style="width:100%;margin-top:12px" onclick="order()">Enviar pedido pelo WhatsApp</button><p class="muted" style="font-size:11px">O pedido será registrado neste navegador e encaminhado para atendimento. Pagamento e produção serão confirmados pela equipe.</p></div></div></section>
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow">TECNOLOGIA QUE APROXIMA</div>
+      <h1>Sua empresa.<br><span class="gold">Mais conectada.</span></h1>
+      <p>Uma plaquinha inteligente para reunir WhatsApp, Instagram, avaliações, localização e muito mais. Aproxime o celular ou escaneie o QR Code.</p>
+      <button onclick="document.getElementById('produtos').scrollIntoView({behavior:'smooth'})">Conhecer os modelos</button>
+    </div>
+    <div class="hero-art">
+      <div class="plaque">
+        <small>TOQUE PARA CONECTAR</small>
+        <b>KC CONNECT</b>
+        <div class="qr">▦</div>
+        <small>NFC • QR CODE</small>
+      </div>
+      <p class="muted">UM TOQUE. TODAS AS CONEXÕES.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-title">
+      <div class="eyebrow">SIMPLES E INTELIGENTE</div>
+      <h2>Como funciona</h2>
+      <div class="muted">Sua presença digital em um único lugar.</div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>01 · Escolha</h3>
+        <p class="muted">Selecione o modelo e as funções da sua placa.</p>
+      </div>
+      <div class="card">
+        <h3>02 · Personalize</h3>
+        <p class="muted">Informe os dados do seu estabelecimento.</p>
+      </div>
+      <div class="card">
+        <h3>03 · Conecte</h3>
+        <p class="muted">Receba uma página digital exclusiva com NFC e QR Code.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="produtos">
+    <div class="section-title">
+      <div class="eyebrow">NOSSA VITRINE</div>
+      <h2>Escolha sua plaquinha</h2>
+      <p class="muted">Modelos KC CONNECT. Consulte as opções e personalize seu pedido.</p>
+    </div>
+
+    <div class="product-grid">
+      <article class="product-card">
+        <div class="product-art">
+          <div class="product-plaque">
+            <small>TOQUE PARA CONECTAR</small>
+            <strong>KC CONNECT</strong>
+            <small>NFC • QR CODE</small>
+          </div>
+        </div>
+        <h3>Placa Clássica</h3>
+        <p>Visual elegante, acabamento tradicional e personalização com suas conexões digitais.</p>
+        <div class="product-price" id="classicPrice">R$ 49,90</div>
+        <button onclick="chooseModel('normal')">Escolher clássica</button>
+      </article>
+
+      <article class="product-card">
+        <div class="product-art">
+          <div class="product-plaque transparent">
+            <small>TOQUE PARA CONECTAR</small>
+            <strong>KC CONNECT</strong>
+            <small>NFC • QR CODE</small>
+          </div>
+        </div>
+        <h3>Placa Transparente</h3>
+        <p>Acabamento transparente para um visual moderno e diferenciado.</p>
+        <div class="product-price" id="transparentPrice">R$ 59,90</div>
+        <button onclick="chooseModel('transparent')">Escolher transparente</button>
+      </article>
+    </div>
+    <p class="muted">Os valores podem ser atualizados pela administração. As funções adicionais são calculadas no configurador.</p>
+  </section>
+
+  <section id="config">
+    <div class="section-title">
+      <div class="eyebrow">PERSONALIZAÇÃO</div>
+      <h2>Monte sua plaquinha</h2>
+      <p class="muted">Quatro funções incluídas. As funções extras são calculadas automaticamente.</p>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <h3>Quais funções deseja?</h3>
+        <div class="checks" id="functions"></div>
+
+        <div class="field">
+          <label>Modelo da placa</label>
+          <select id="model" onchange="calc()">
+            <option value="normal">Clássica</option>
+            <option value="transparent">Transparente</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Nome do estabelecimento</label>
+          <input id="business" maxlength="100" placeholder="Ex.: Restaurante Sabor">
+        </div>
+
+        <div class="field">
+          <label>Seu WhatsApp</label>
+          <input id="phone" type="tel" maxlength="20" placeholder="(98) 99999-9999">
+        </div>
+
+        <div class="field">
+          <label>Observações (opcional)</label>
+          <textarea id="notes" rows="3" maxlength="500" placeholder="Conte algo importante sobre seu pedido"></textarea>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div class="eyebrow">RESUMO DO PEDIDO</div>
+        <p id="chosen">Nenhuma função selecionada.</p>
+        <div class="row"><span>Placa base</span><b id="base">R$ 49,90</b></div>
+        <div class="row"><span>Funções extras</span><b id="extras">R$ 0,00</b></div>
+        <div class="row"><span>Acabamento</span><b id="finish">R$ 0,00</b></div>
+        <div class="row"><b>Total</b><span class="price" id="total">R$ 49,90</span></div>
+        <button id="orderButton" onclick="order()">Enviar pedido pelo WhatsApp</button>
+        <p style="font-size:11px">O pedido será registrado no sistema e encaminhado para atendimento. Pagamento e produção serão confirmados pela equipe.</p>
+      </div>
+    </div>
+  </section>
 </div>
-<div id="cliente" class="hidden"><div class="eyebrow">KC CONNECT</div><h2>Área do Cliente</h2><p class="muted">Acompanhe seus pedidos e consulte sua página digital.</p><div class="notice">Demonstração local: nesta primeira versão, os dados ficam salvos somente neste navegador. O login seguro e a sincronização online serão ativados na integração com Supabase.</div><div class="card" style="max-width:600px;margin-top:16px"><h3>Acessar minha conta</h3><div class="field"><label>E-mail</label><input id="clientEmail" type="email" placeholder="voce@email.com"></div><div class="field"><label>Senha</label><input id="clientPass" type="password" placeholder="Senha (versão demonstrativa)"></div><button onclick="clientLogin()">Entrar / consultar pedidos deste navegador</button></div><div id="clientArea" class="card hidden" style="margin-top:16px"></div></div>
-<div id="admin" class="hidden"><div class="eyebrow">ACESSO RESTRITO</div><h2>KC CONNECT ADMIN</h2><div class="notice">Painel demonstrativo. Não use dados reais nem considere este acesso seguro até configurar autenticação, banco de dados e políticas RLS no Supabase.</div><div class="card" style="max-width:500px;margin:16px 0"><div class="field"><label>Senha demonstrativa</label><input id="adminPass" type="password" <label>Digite o login</label> 
-</div><button onclick="adminLogin()">Acessar painel</button></div><div id="adminArea" class="hidden"><div class="grid" id="stats"></div><div class="tabs" style="margin-top:20px"><button class="active" onclick="adminTab('orders',this)">Pedidos</button><button onclick="adminTab('settings',this)">Preços</button></div><div id="adminContent" class="card"></div></div></div>
-<div id="publicPage" class="hidden"></div>
-</main><footer><b>KC CONNECT</b><br>UM TOQUE. TODAS AS CONEXÕES.<br><small>© KC CONNECT — Tecnologia para aproximar negócios e pessoas.</small></footer>
-const WA='5598984887267', names=['Instagram','WhatsApp','Avaliação do Google','Localização','Cardápio digital','Pix','Site próprio'];
-const links=['instagram','whatsapp','google','location','menu','pix','site'];
-let orders=JSON.parse(localStorage.getItem('kc_orders')||'[]');
-let settings=JSON.parse(localStorage.getItem('kc_settings')||'{"base":49.9,"included":4,"extra":8,"transparent":10}');
-const money=n=>n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-function renderChecks(){document.getElementById('functions').innerHTML=names.map((n,i)=>`<label class="check"><input type="checkbox" value="${i}" onchange="calc()"> ${n}</label>`).join('');calc()}
-function selected(){return [...document.querySelectorAll('#functions input:checked')].map(x=>+x.value)}
-function calc(){let s=selected(), extra=Math.max(0,s.length-settings.included)*settings.extra, fin=document.getElementById('model').value==='transparent'?settings.transparent:0;document.getElementById('chosen').textContent=s.length?s.map(i=>names[i]).join(' · '):'Nenhuma função selecionada.';document.getElementById('base').textContent=money(settings.base);document.getElementById('extras').textContent=money(extra);document.getElementById('finish').textContent=money(fin);document.getElementById('total').textContent=money(settings.base+extra+fin)}
-function order(){let s=selected(),biz=document.getElementById('business').value.trim(),phone=document.getElementById('phone').value.trim();if(!biz||!phone||!s.length){alert('Informe o estabelecimento, WhatsApp e selecione ao menos uma função.');return}let total=settings.base+Math.max(0,s.length-settings.included)*settings.extra+(document.getElementById('model').value==='transparent'?settings.transparent:0);let o={id:'KC-'+Date.now().toString().slice(-7),business:biz,phone,functions:s.map(i=>names[i]),model:document.getElementById('model').value,total,status:'Novo',notes:document.getElementById('notes').value,date:new Date().toLocaleString('pt-BR')};orders.unshift(o);localStorage.setItem('kc_orders',JSON.stringify(orders));let msg=`Olá! Quero fazer um pedido na KC CONNECT.%0A pedido: ${o.id}%0AEstabelecimento: ${biz}%0AWhatsApp: ${phone}%0AModelo: ${o.model}%0AFunções: ${o.functions.join(', ')}%0AValor: ${money(total)}%0AObservações: ${o.notes}`;window.open(`https://wa.me/${WA}?text=${encodeURIComponent(decodeURIComponent(msg))}`,'_blank');alert('Pedido salvo neste navegador. Finalize o envio pelo WhatsApp.')}
-function go(id){['loja','cliente','admin','publicPage'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));window.scrollTo(0,0)}
-function clientLogin(){let email=document.getElementById('clientEmail').value.trim();if(!email){alert('Informe seu e-mail.');return}let mine=orders.filter(o=>o.phone.replace(/\D/g,'')===email.replace(/\D/g,'')||email.toLowerCase().includes(o.business.toLowerCase()));let el=document.getElementById('clientArea');el.classList.remove('hidden');el.innerHTML='<h3>Pedidos encontrados neste navegador</h3>'+(mine.length?mine.map(o=>`<div class="row"><div><b>${o.business}</b><div class="muted">${o.id} · ${o.date}</div><div class="muted">${o.functions.join(', ')}</div></div><div><b>${money(o.total)}</b><div class="status">${o.status}</div></div></div>`).join(''):'<p class="muted">Nenhum pedido encontrado neste navegador. A conta online será ativada na próxima etapa.</p>')}
-function adminLogin(){if(document.getElementById('adminPass').value!=='digite seu login'){alert('Senha demonstrativa incorreta.');return}document.getElementById('adminArea').classList.remove('hidden');adminTab('orders',document.querySelector('.tabs button'))}
-function adminTab(tab,btn){document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');let el=document.getElementById('adminContent');if(tab==='orders'){el.innerHTML='<h3>Pedidos recebidos</h3>'+(orders.length?orders.map((o,i)=>`<div class="row"><div><b>${o.business}</b><div class="muted">${o.id} · ${o.phone} · ${o.functions.join(', ')}</div><div class="muted">${money(o.total)} · ${o.date}</div></div><div><select onchange="setStatus(${i},this.value)">${['Novo','Pagamento confirmado','Em produção','Enviado','Entregue','Cancelado'].map(s=>`<option ${o.status===s?'selected':''}>${s}</option>`).join('')}</select></div></div>`).join(''):'<p class="muted">Ainda não há pedidos.</p>')}else{el.innerHTML=`<h3>Configurações de preço</h3><div class="field"><label>Preço base (R$)</label><input id="pbase" type="number" step=".01" value="${settings.base}"></div><div class="field"><label>Funções incluídas</label><input id="pinc" type="number" value="${settings.included}"></div><div class="field"><label>Preço por função extra (R$)</label><input id="pextra" type="number" step=".01" value="${settings.extra}"></div><div class="field"><label>Adicional transparente (R$)</label><input id="ptrans" type="number" step=".01" value="${settings.transparent}"></div><button onclick="saveSettings()">Salvar preços</button>`}}
-function setStatus(i,s){orders[i].status=s;localStorage.setItem('kc_orders',JSON.stringify(orders));adminTab('orders',document.querySelector('.tabs button'))}
-function saveSettings(){settings={base:+pbase.value,included:+pinc.value,extra:+pextra.value,transparent:+ptrans.value};localStorage.setItem('kc_settings',JSON.stringify(settings));alert('Preços atualizados neste navegador.');calc()}
-renderChecks();
+
+<div id="cliente" class="hidden">
+  <div class="eyebrow">KC CONNECT</div>
+  <h2>Área do Cliente</h2>
+  <p class="muted">Acompanhe seu pedido e fale com nossa equipe.</p>
+  <div class="card" style="max-width:600px">
+    <h3>Atendimento do seu pedido</h3>
+    <p class="muted">Para consultar o andamento, entre em contato pelo WhatsApp e informe o número do seu pedido.</p>
+    <button onclick="window.open('https://wa.me/5598984887267?text=Ol%C3%A1%2C%20quero%20consultar%20meu%20pedido%20KC%20CONNECT.','_blank')">Consultar pelo WhatsApp</button>
+  </div>
+</div>
+
+<div id="admin" class="hidden">
+  <div class="eyebrow">ACESSO RESTRITO</div>
+  <h2>KC CONNECT ADMIN</h2>
+  <p class="muted">Painel exclusivo da administração.</p>
+
+  <div class="card admin-login" id="adminLoginBox">
+    <h3>Entrar no painel</h3>
+    <div class="field">
+      <label>E-mail do administrador</label>
+      <input id="adminEmail" type="email" autocomplete="username" placeholder="Seu e-mail">
+    </div>
+    <div class="field">
+      <label>Senha</label>
+      <input id="adminPass" type="password" autocomplete="current-password" placeholder="Sua senha">
+    </div>
+    <button id="loginButton" onclick="adminLogin()">Acessar painel</button>
+  </div>
+
+  <div id="adminArea" class="hidden">
+    <div class="admin-actions">
+      <button class="secondary" onclick="loadOrders()">Atualizar pedidos</button>
+      <button class="secondary" onclick="adminLogout()">Sair do painel</button>
+    </div>
+    <div class="grid" id="stats" style="margin-top:18px"></div>
+    <div class="tabs">
+      <button class="active" onclick="adminTab('orders',this)">Pedidos</button>
+      <button onclick="adminTab('settings',this)">Preços</button>
+    </div>
+    <div id="adminContent" class="card"></div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <b>KC CONNECT</b>
+  <div>UM TOQUE. TODAS AS CONEXÕES.</div>
+  <small>© KC CONNECT — Tecnologia para aproximar negócios e pessoas.</small>
+  <button class="footer-admin" onclick="go('admin')">Acesso administrativo</button>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
+'use strict';
+
 const SUPABASE_URL = 'https://jbdzhcaqiiiggfgmwbda.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_HqCjR3O0ZCcmDMXL67QPTQ_caD-fZPG';
+const WA = '5598984887267';
 
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const WA = '5598984887267';
-const names = ['Instagram','WhatsApp','Avaliação do Google','Localização','Cardápio digital','Pix','Site próprio'];
+const names = [
+  'Instagram',
+  'WhatsApp',
+  'Avaliação do Google',
+  'Localização',
+  'Cardápio digital',
+  'Pix',
+  'Site próprio'
+];
 
 let orders = [];
+let currentUser = null;
 let settings = {
   base: 49.90,
   included: 4,
@@ -68,282 +530,411 @@ let settings = {
   transparent: 10
 };
 
-let currentUser = null;
-
-const money = n => Number(n).toLocaleString('pt-BR', {
-  style: 'currency',
-  currency: 'BRL'
+const money = value => Number(value || 0).toLocaleString('pt-BR',{
+  style:'currency',
+  currency:'BRL'
 });
 
-const safe = value => String(value ?? '').replace(/[&<>"']/g, c => ({
-  '&':'&amp;', '<':'&lt;', '>':'&gt;',
-  '"':'&quot;', "'":'&#39;'
-}[c]));
+const safe = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+}[char]));
 
-function selected() {
+function selected(){
   return [...document.querySelectorAll('#functions input:checked')]
-    .map(x => Number(x.value));
+    .map(input => Number(input.value));
 }
 
-function renderChecks() {
-  document.getElementById('functions').innerHTML =
-    names.map((n,i) => `
-      <label class="check">
-        <input type="checkbox" value="${i}" onchange="calc()"> ${n}
-      </label>
-    `).join('');
+function renderChecks(){
+  document.getElementById('functions').innerHTML = names.map((name,index)=>`
+    <label class="check">
+      <input type="checkbox" value="${index}" onchange="calc()">
+      ${safe(name)}
+    </label>
+  `).join('');
   calc();
 }
 
-function calc() {
-  const s = selected();
-  const extra = Math.max(0, s.length - settings.included) * settings.extra;
-  const finish = document.getElementById('model').value === 'transparent'
-    ? settings.transparent : 0;
+function calc(){
+  const model = document.getElementById('model').value;
+  const count = selected().length;
+  const extra = Math.max(0,count-settings.included)*settings.extra;
+  const finish = model === 'transparent' ? settings.transparent : 0;
+  const total = settings.base + extra + finish;
 
   document.getElementById('chosen').textContent =
-    s.length ? s.map(i => names[i]).join(' · ') : 'Nenhuma função selecionada.';
+    count ? selected().map(index=>names[index]).join(' · ') : 'Nenhuma função selecionada.';
 
   document.getElementById('base').textContent = money(settings.base);
   document.getElementById('extras').textContent = money(extra);
   document.getElementById('finish').textContent = money(finish);
-  document.getElementById('total').textContent =
-    money(settings.base + extra + finish);
+  document.getElementById('total').textContent = money(total);
 }
 
-async function loadSettings() {
-  const { data, error } = await db
+function chooseModel(model){
+  document.getElementById('model').value = model;
+  calc();
+  document.getElementById('config').scrollIntoView({behavior:'smooth'});
+}
+
+function updateProductPrices(){
+  document.getElementById('classicPrice').textContent = money(settings.base);
+  document.getElementById('transparentPrice').textContent =
+    money(settings.base + settings.transparent);
+}
+
+async function loadSettings(){
+  const {data,error} = await db
     .from('site_settings')
     .select('*')
-    .eq('id', 1)
-    .single();
+    .eq('id',1)
+    .maybeSingle();
 
-  if (error) {
-    console.error(error);
-    alert('Não foi possível carregar os preços. Confira a conexão.');
+  if(error){
+    console.error('Erro ao carregar configurações:',error);
+    return;
+  }
+
+  if(!data){
+    console.warn('Não existe uma configuração com id 1 em site_settings. Usando valores padrão.');
     return;
   }
 
   settings = {
-    base: Number(data.base_price),
-    included: Number(data.included_features),
-    extra: Number(data.extra_feature_price),
-    transparent: Number(data.transparent_extra_price)
+    base:Number(data.base_price ?? 49.90),
+    included:Number(data.included_features ?? 4),
+    extra:Number(data.extra_feature_price ?? 8),
+    transparent:Number(data.transparent_extra_price ?? 10)
   };
 
+  updateProductPrices();
   calc();
 }
 
-async function order() {
-  const s = selected();
-  const biz = document.getElementById('business').value.trim();
+async function order(){
+  const button = document.getElementById('orderButton');
+  const functions = selected();
+  const business = document.getElementById('business').value.trim();
   const phone = document.getElementById('phone').value.trim();
   const model = document.getElementById('model').value;
   const notes = document.getElementById('notes').value.trim();
 
-  if (!biz || !phone || !s.length) {
+  if(!business || !phone || !functions.length){
     alert('Informe o estabelecimento, WhatsApp e selecione ao menos uma função.');
     return;
   }
 
   const total = settings.base +
-    Math.max(0, s.length - settings.included) * settings.extra +
+    Math.max(0,functions.length-settings.included)*settings.extra +
     (model === 'transparent' ? settings.transparent : 0);
 
+  const message =
+    `Olá! Quero fazer um pedido na KC CONNECT.\n`+
+    `Estabelecimento: ${business}\n`+
+    `WhatsApp: ${phone}\n`+
+    `Modelo: ${model === 'transparent' ? 'Transparente' : 'Clássica'}\n`+
+    `Funções: ${functions.map(index=>names[index]).join(', ')}\n`+
+    `Valor: ${money(total)}\n`+
+    `Observações: ${notes || 'Nenhuma'}`;
+
+  const whatsappWindow = window.open('about:blank','_blank');
+
+  button.disabled = true;
+  button.textContent = 'Registrando pedido...';
+
   const newOrder = {
-    customer_name: biz,
-    customer_whatsapp: phone,
-    business_name: biz,
-    features: s.map(i => names[i]),
+    customer_name:business,
+    customer_whatsapp:phone,
+    business_name:business,
+    features:functions.map(index=>names[index]),
     model,
-    total_price: total,
-    status: 'Novo'
+    total_price:total,
+    status:'Novo'
   };
 
-  const { data, error } = await db
+  const {data,error} = await db
     .from('orders')
     .insert(newOrder)
     .select()
     .single();
 
-  if (error) {
-    console.error(error);
-    alert('Não foi possível registrar o pedido. Tente novamente.');
+  button.disabled = false;
+  button.textContent = 'Enviar pedido pelo WhatsApp';
+
+  if(error){
+    console.error('Erro ao registrar pedido:',error);
+    if(whatsappWindow) whatsappWindow.close();
+    alert('Não foi possível registrar o pedido. Confira a conexão e tente novamente.\n\n'+error.message);
     return;
   }
 
-  const message =
-    `Olá! Quero fazer um pedido na KC CONNECT.\n` +
-    `Estabelecimento: ${biz}\n` +
-    `WhatsApp: ${phone}\n` +
-    `Modelo: ${model}\n` +
-    `Funções: ${s.map(i => names[i]).join(', ')}\n` +
-    `Valor: ${money(total)}\n` +
-    `Observações: ${notes}`;
+  const finalMessage = message + `\nCódigo do pedido: ${data.id}`;
 
-  alert('Pedido registrado com sucesso! Vamos abrir o WhatsApp.');
-  window.open(
-    `https://wa.me/${WA}?text=${encodeURIComponent(message)}`,
-    '_blank'
-  );
+  if(whatsappWindow){
+    whatsappWindow.location.href =
+      `https://wa.me/${WA}?text=${encodeURIComponent(finalMessage)}`;
+  }else{
+    window.location.href =
+      `https://wa.me/${WA}?text=${encodeURIComponent(finalMessage)}`;
+  }
+
+  alert('Pedido registrado! O WhatsApp será aberto para finalizar o atendimento.');
 }
 
-function go(id) {
-  ['loja','cliente','admin','publicPage'].forEach(x => {
-    document.getElementById(x).classList.toggle('hidden', x !== id);
+function go(id){
+  ['loja','cliente','admin'].forEach(section=>{
+    document.getElementById(section).classList.toggle('hidden',section!==id);
   });
   window.scrollTo(0,0);
 }
 
-async function adminLogin() {
-  const email = prompt('Digite o e-mail cadastrado no Supabase:');
-  const password = document.getElementById('adminPass').value;
+async function checkAdmin(){
+  const {data} = await db.auth.getSession();
+  if(!data.session) return;
 
-  if (!email || !password) {
+  const user = data.session.user;
+  const {data:profile,error} = await db
+    .from('profiles')
+    .select('role')
+    .eq('id',user.id)
+    .single();
+
+  if(error || !profile || profile.role !== 'admin'){
+    await db.auth.signOut();
+    return;
+  }
+
+  currentUser = user;
+  document.getElementById('adminLoginBox').classList.add('hidden');
+  document.getElementById('adminArea').classList.remove('hidden');
+  await loadOrders();
+  adminTab('orders',document.querySelector('.tabs button'));
+}
+
+async function adminLogin(){
+  const email = document.getElementById('adminEmail').value.trim();
+  const password = document.getElementById('adminPass').value;
+  const button = document.getElementById('loginButton');
+
+  if(!email || !password){
     alert('Informe seu e-mail e sua senha.');
     return;
   }
 
-  const { data, error } = await db.auth.signInWithPassword({
-    email,
-    password
-  });
+  button.disabled = true;
+  button.textContent = 'Verificando...';
 
-  if (error) {
-    alert('Falha no login: ' + error.message);
+  const {data,error} = await db.auth.signInWithPassword({email,password});
+
+  button.disabled = false;
+  button.textContent = 'Acessar painel';
+
+  if(error){
+    alert('Não foi possível entrar: '+error.message);
     return;
   }
 
-  const { data: profile, error: profileError } = await db
+  const {data:profile,error:profileError} = await db
     .from('profiles')
     .select('role')
-    .eq('id', data.user.id)
+    .eq('id',data.user.id)
     .single();
 
-  if (profileError || profile.role !== 'admin') {
+  if(profileError || !profile || profile.role !== 'admin'){
     await db.auth.signOut();
     alert('Esta conta não possui permissão de administrador.');
     return;
   }
 
   currentUser = data.user;
+  document.getElementById('adminLoginBox').classList.add('hidden');
   document.getElementById('adminArea').classList.remove('hidden');
+
   await loadOrders();
-  adminTab('orders', document.querySelector('.tabs button'));
-  alert('Bem-vindo ao painel administrativo!');
+  adminTab('orders',document.querySelector('.tabs button'));
+
+  alert('Bem-vindo ao painel KC CONNECT!');
 }
 
-async function loadOrders() {
-  const { data, error } = await db
+async function adminLogout(){
+  await db.auth.signOut();
+  currentUser = null;
+  orders = [];
+  document.getElementById('adminArea').classList.add('hidden');
+  document.getElementById('adminLoginBox').classList.remove('hidden');
+  document.getElementById('adminPass').value = '';
+  alert('Você saiu do painel administrativo.');
+}
+
+async function loadOrders(){
+  if(!currentUser){
+    alert('Entre no painel administrativo primeiro.');
+    return;
+  }
+
+  const {data,error} = await db
     .from('orders')
     .select('*')
-    .order('created_at', { ascending: false });
+    .order('created_at',{ascending:false});
 
-  if (error) {
+  if(error){
     console.error(error);
-    alert('Erro ao carregar pedidos: ' + error.message);
+    alert('Erro ao carregar pedidos: '+error.message);
     return;
   }
 
   orders = data || [];
 
+  const newOrders = orders.filter(order=>order.status==='Novo').length;
+  const sales = orders
+    .filter(order=>order.status!=='Cancelado')
+    .reduce((sum,order)=>sum+Number(order.total_price || 0),0);
+
   document.getElementById('stats').innerHTML = `
-    <div class="card"><h3>Pedidos</h3><div class="price">${orders.length}</div></div>
-    <div class="card"><h3>Novos</h3><div class="price">${orders.filter(o => o.status === 'Novo').length}</div></div>
-    <div class="card"><h3>Vendas</h3><div class="price">${money(orders.reduce((s,o) => s + Number(o.total_price),0))}</div></div>
+    <div class="card">
+      <h3>Total de pedidos</h3>
+      <div class="price">${orders.length}</div>
+    </div>
+    <div class="card">
+      <h3>Novos pedidos</h3>
+      <div class="price">${newOrders}</div>
+    </div>
+    <div class="card">
+      <h3>Vendas registradas</h3>
+      <div class="price">${money(sales)}</div>
+    </div>
   `;
 }
 
-function adminTab(tab, btn) {
-  document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+function adminTab(tab,button){
+  document.querySelectorAll('.tabs button').forEach(item=>item.classList.remove('active'));
+  if(button) button.classList.add('active');
 
-  const el = document.getElementById('adminContent');
+  const content = document.getElementById('adminContent');
 
-  if (tab === 'orders') {
-    el.innerHTML = '<h3>Pedidos recebidos</h3>' +
-      (orders.length ? orders.map(o => `
+  if(tab==='orders'){
+    content.innerHTML = '<h3>Pedidos recebidos</h3>' +
+      (orders.length ? orders.map(order=>`
         <div class="row">
           <div>
-            <b>${safe(o.business_name || o.customer_name)}</b>
-            <div class="muted">${safe(o.customer_whatsapp)}</div>
-            <div class="muted">${safe((o.features || []).join(', '))}</div>
-            <div class="muted">${money(o.total_price)} · ${new Date(o.created_at).toLocaleString('pt-BR')}</div>
+            <b>${safe(order.business_name || order.customer_name)}</b>
+            <div class="muted">Pedido: ${safe(order.id)}</div>
+            <div class="muted">${safe(order.customer_whatsapp)}</div>
+            <div class="muted">${safe((order.features || []).join(', '))}</div>
+            <div class="muted">${money(order.total_price)}</div>
+            <span class="status">${safe(order.status)}</span>
           </div>
           <div>
-            <select onchange="setStatus('${o.id}',this.value)">
-              ${['Novo','Pagamento confirmado','Em produção','Enviado','Entregue','Cancelado'].map(s =>
-                `<option value="${s}" ${o.status === s ? 'selected' : ''}>${s}</option>`
-              ).join('')}
+            <select onchange="setStatus('${safe(order.id)}',this.value)">
+              ${['Novo','Pagamento confirmado','Em produção','Enviado','Entregue','Cancelado'].map(status=>`
+                <option value="${status}" ${order.status===status?'selected':''}>${status}</option>
+              `).join('')}
             </select>
           </div>
         </div>
-      `).join('') : '<p class="muted">Ainda não há pedidos.</p>');
-  } else {
-    el.innerHTML = `
-      <h3>Configurações de preço</h3>
-      <div class="field"><label>Preço base (R$)</label><input id="pbase" type="number" step=".01" value="${settings.base}"></div>
-      <div class="field"><label>Funções incluídas</label><input id="pinc" type="number" value="${settings.included}"></div>
-      <div class="field"><label>Preço por função extra (R$)</label><input id="pextra" type="number" step=".01" value="${settings.extra}"></div>
-      <div class="field"><label>Adicional transparente (R$)</label><input id="ptrans" type="number" step=".01" value="${settings.transparent}"></div>
-      <button onclick="saveSettings()">Salvar preços</button>
-    `;
+      `).join('') : '<div class="empty">Ainda não há pedidos.</div>');
+    return;
   }
+
+  content.innerHTML = `
+    <h3>Configurações de preços</h3>
+    <div class="field">
+      <label>Preço base (R$)</label>
+      <input id="pbase" type="number" min="0" step="0.01" value="${settings.base}">
+    </div>
+    <div class="field">
+      <label>Funções incluídas</label>
+      <input id="pinc" type="number" min="0" step="1" value="${settings.included}">
+    </div>
+    <div class="field">
+      <label>Preço por função extra (R$)</label>
+      <input id="pextra" type="number" min="0" step="0.01" value="${settings.extra}">
+    </div>
+    <div class="field">
+      <label>Adicional transparente (R$)</label>
+      <input id="ptrans" type="number" min="0" step="0.01" value="${settings.transparent}">
+    </div>
+    <button onclick="saveSettings()">Salvar preços</button>
+  `;
 }
 
-async function setStatus(id, status) {
-  const { error } = await db
+async function setStatus(id,status){
+  const {error} = await db
     .from('orders')
-    .update({ status })
-    .eq('id', id);
+    .update({status})
+    .eq('id',id);
 
-  if (error) {
-    alert('Erro ao atualizar pedido: ' + error.message);
+  if(error){
+    alert('Erro ao atualizar pedido: '+error.message);
     return;
   }
 
   await loadOrders();
-  adminTab('orders', document.querySelector('.tabs button'));
+  adminTab('orders',document.querySelector('.tabs button'));
 }
 
-async function saveSettings() {
+async function saveSettings(){
+  if(!currentUser){
+    alert('Acesso administrativo necessário.');
+    return;
+  }
+
+  const base = Number(document.getElementById('pbase').value);
+  const included = Number(document.getElementById('pinc').value);
+  const extra = Number(document.getElementById('pextra').value);
+  const transparent = Number(document.getElementById('ptrans').value);
+
+  if(
+    !Number.isFinite(base) || base<0 ||
+    !Number.isInteger(included) || included<0 ||
+    !Number.isFinite(extra) || extra<0 ||
+    !Number.isFinite(transparent) || transparent<0
+  ){
+    alert('Confira os valores informados.');
+    return;
+  }
+
   const updated = {
-    base_price: Number(document.getElementById('pbase').value),
-    included_features: Number(document.getElementById('pinc').value),
-    extra_feature_price: Number(document.getElementById('pextra').value),
-    transparent_extra_price: Number(document.getElementById('ptrans').value),
-    updated_at: new Date().toISOString()
+    base_price:base,
+    included_features:included,
+    extra_feature_price:extra,
+    transparent_extra_price:transparent,
+    updated_at:new Date().toISOString()
   };
 
-  if (Object.values(updated).some(v => typeof v === 'number' && (!Number.isFinite(v) || v < 0))) {
-    alert('Confira os valores. Eles não podem ser negativos.');
-    return;
-  }
-
-  const { error } = await db
+  const {data,error} = await db
     .from('site_settings')
     .update(updated)
-    .eq('id', 1);
+    .eq('id',1)
+    .select();
 
-  if (error) {
-    alert('Erro ao salvar preços: ' + error.message);
+  if(error){
+    alert('Erro ao salvar preços: '+error.message);
+    return;
+  }
+
+  if(!data || !data.length){
+    alert('Nenhuma configuração foi atualizada. Verifique se existe uma linha com id 1 na tabela site_settings.');
     return;
   }
 
   await loadSettings();
-  alert('Preços atualizados no banco de dados!');
-  adminTab('settings', document.querySelectorAll('.tabs button')[1]);
+  alert('Preços atualizados com sucesso!');
+  adminTab('settings',document.querySelectorAll('.tabs button')[1]);
 }
 
-async function clientLogin() {
-  alert('A área do cliente ainda será integrada na próxima etapa.');
-}
-
-async function startApp() {
+async function startApp(){
   renderChecks();
+  updateProductPrices();
   await loadSettings();
+  await checkAdmin();
 }
 
 startApp();
 </script>
-</body></html>
+
+</body>
+</html>
