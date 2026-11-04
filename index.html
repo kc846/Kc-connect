@@ -31,7 +31,6 @@ section{margin:32px 0}.section-title{display:flex;justify-content:space-between;
 <div id="admin" class="hidden"><div class="eyebrow">ACESSO RESTRITO</div><h2>KC CONNECT ADMIN</h2><div class="notice">Painel demonstrativo. Não use dados reais nem considere este acesso seguro até configurar autenticação, banco de dados e políticas RLS no Supabase.</div><div class="card" style="max-width:500px;margin:16px 0"><div class="field"><label>Senha demonstrativa</label><input id="adminPass" type="password" placeholder="Digite admin123"></div><button onclick="adminLogin()">Acessar painel</button></div><div id="adminArea" class="hidden"><div class="grid" id="stats"></div><div class="tabs" style="margin-top:20px"><button class="active" onclick="adminTab('orders',this)">Pedidos</button><button onclick="adminTab('settings',this)">Preços</button></div><div id="adminContent" class="card"></div></div></div>
 <div id="publicPage" class="hidden"></div>
 </main><footer><b>KC CONNECT</b><br>UM TOQUE. TODAS AS CONEXÕES.<br><small>© KC CONNECT — Tecnologia para aproximar negócios e pessoas.</small></footer>
-<script>
 const WA='5598984887267', names=['Instagram','WhatsApp','Avaliação do Google','Localização','Cardápio digital','Pix','Site próprio'];
 const links=['instagram','whatsapp','google','location','menu','pix','site'];
 let orders=JSON.parse(localStorage.getItem('kc_orders')||'[]');
@@ -48,4 +47,302 @@ function adminTab(tab,btn){document.querySelectorAll('.tabs button').forEach(x=>
 function setStatus(i,s){orders[i].status=s;localStorage.setItem('kc_orders',JSON.stringify(orders));adminTab('orders',document.querySelector('.tabs button'))}
 function saveSettings(){settings={base:+pbase.value,included:+pinc.value,extra:+pextra.value,transparent:+ptrans.value};localStorage.setItem('kc_settings',JSON.stringify(settings));alert('Preços atualizados neste navegador.');calc()}
 renderChecks();
-</script></body></html>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = 'https://jbdzhcaqiiiggfgmwbda.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_HqCjR3O0ZCcmDMXL67QPTQ_caD-fZPG';
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const WA = '5598984887267';
+const names = ['Instagram','WhatsApp','Avaliação do Google','Localização','Cardápio digital','Pix','Site próprio'];
+
+let orders = [];
+let settings = {
+  base: 49.90,
+  included: 4,
+  extra: 8,
+  transparent: 10
+};
+
+let currentUser = null;
+
+const money = n => Number(n).toLocaleString('pt-BR', {
+  style: 'currency',
+  currency: 'BRL'
+});
+
+const safe = value => String(value ?? '').replace(/[&<>"']/g, c => ({
+  '&':'&amp;', '<':'&lt;', '>':'&gt;',
+  '"':'&quot;', "'":'&#39;'
+}[c]));
+
+function selected() {
+  return [...document.querySelectorAll('#functions input:checked')]
+    .map(x => Number(x.value));
+}
+
+function renderChecks() {
+  document.getElementById('functions').innerHTML =
+    names.map((n,i) => `
+      <label class="check">
+        <input type="checkbox" value="${i}" onchange="calc()"> ${n}
+      </label>
+    `).join('');
+  calc();
+}
+
+function calc() {
+  const s = selected();
+  const extra = Math.max(0, s.length - settings.included) * settings.extra;
+  const finish = document.getElementById('model').value === 'transparent'
+    ? settings.transparent : 0;
+
+  document.getElementById('chosen').textContent =
+    s.length ? s.map(i => names[i]).join(' · ') : 'Nenhuma função selecionada.';
+
+  document.getElementById('base').textContent = money(settings.base);
+  document.getElementById('extras').textContent = money(extra);
+  document.getElementById('finish').textContent = money(finish);
+  document.getElementById('total').textContent =
+    money(settings.base + extra + finish);
+}
+
+async function loadSettings() {
+  const { data, error } = await db
+    .from('site_settings')
+    .select('*')
+    .eq('id', 1)
+    .single();
+
+  if (error) {
+    console.error(error);
+    alert('Não foi possível carregar os preços. Confira a conexão.');
+    return;
+  }
+
+  settings = {
+    base: Number(data.base_price),
+    included: Number(data.included_features),
+    extra: Number(data.extra_feature_price),
+    transparent: Number(data.transparent_extra_price)
+  };
+
+  calc();
+}
+
+async function order() {
+  const s = selected();
+  const biz = document.getElementById('business').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const model = document.getElementById('model').value;
+  const notes = document.getElementById('notes').value.trim();
+
+  if (!biz || !phone || !s.length) {
+    alert('Informe o estabelecimento, WhatsApp e selecione ao menos uma função.');
+    return;
+  }
+
+  const total = settings.base +
+    Math.max(0, s.length - settings.included) * settings.extra +
+    (model === 'transparent' ? settings.transparent : 0);
+
+  const newOrder = {
+    customer_name: biz,
+    customer_whatsapp: phone,
+    business_name: biz,
+    features: s.map(i => names[i]),
+    model,
+    total_price: total,
+    status: 'Novo'
+  };
+
+  const { data, error } = await db
+    .from('orders')
+    .insert(newOrder)
+    .select()
+    .single();
+
+  if (error) {
+    console.error(error);
+    alert('Não foi possível registrar o pedido. Tente novamente.');
+    return;
+  }
+
+  const message =
+    `Olá! Quero fazer um pedido na KC CONNECT.\n` +
+    `Estabelecimento: ${biz}\n` +
+    `WhatsApp: ${phone}\n` +
+    `Modelo: ${model}\n` +
+    `Funções: ${s.map(i => names[i]).join(', ')}\n` +
+    `Valor: ${money(total)}\n` +
+    `Observações: ${notes}`;
+
+  alert('Pedido registrado com sucesso! Vamos abrir o WhatsApp.');
+  window.open(
+    `https://wa.me/${WA}?text=${encodeURIComponent(message)}`,
+    '_blank'
+  );
+}
+
+function go(id) {
+  ['loja','cliente','admin','publicPage'].forEach(x => {
+    document.getElementById(x).classList.toggle('hidden', x !== id);
+  });
+  window.scrollTo(0,0);
+}
+
+async function adminLogin() {
+  const email = prompt('Digite o e-mail cadastrado no Supabase:');
+  const password = document.getElementById('adminPass').value;
+
+  if (!email || !password) {
+    alert('Informe seu e-mail e sua senha.');
+    return;
+  }
+
+  const { data, error } = await db.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert('Falha no login: ' + error.message);
+    return;
+  }
+
+  const { data: profile, error: profileError } = await db
+    .from('profiles')
+    .select('role')
+    .eq('id', data.user.id)
+    .single();
+
+  if (profileError || profile.role !== 'admin') {
+    await db.auth.signOut();
+    alert('Esta conta não possui permissão de administrador.');
+    return;
+  }
+
+  currentUser = data.user;
+  document.getElementById('adminArea').classList.remove('hidden');
+  await loadOrders();
+  adminTab('orders', document.querySelector('.tabs button'));
+  alert('Bem-vindo ao painel administrativo!');
+}
+
+async function loadOrders() {
+  const { data, error } = await db
+    .from('orders')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    alert('Erro ao carregar pedidos: ' + error.message);
+    return;
+  }
+
+  orders = data || [];
+
+  document.getElementById('stats').innerHTML = `
+    <div class="card"><h3>Pedidos</h3><div class="price">${orders.length}</div></div>
+    <div class="card"><h3>Novos</h3><div class="price">${orders.filter(o => o.status === 'Novo').length}</div></div>
+    <div class="card"><h3>Vendas</h3><div class="price">${money(orders.reduce((s,o) => s + Number(o.total_price),0))}</div></div>
+  `;
+}
+
+function adminTab(tab, btn) {
+  document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const el = document.getElementById('adminContent');
+
+  if (tab === 'orders') {
+    el.innerHTML = '<h3>Pedidos recebidos</h3>' +
+      (orders.length ? orders.map(o => `
+        <div class="row">
+          <div>
+            <b>${safe(o.business_name || o.customer_name)}</b>
+            <div class="muted">${safe(o.customer_whatsapp)}</div>
+            <div class="muted">${safe((o.features || []).join(', '))}</div>
+            <div class="muted">${money(o.total_price)} · ${new Date(o.created_at).toLocaleString('pt-BR')}</div>
+          </div>
+          <div>
+            <select onchange="setStatus('${o.id}',this.value)">
+              ${['Novo','Pagamento confirmado','Em produção','Enviado','Entregue','Cancelado'].map(s =>
+                `<option value="${s}" ${o.status === s ? 'selected' : ''}>${s}</option>`
+              ).join('')}
+            </select>
+          </div>
+        </div>
+      `).join('') : '<p class="muted">Ainda não há pedidos.</p>');
+  } else {
+    el.innerHTML = `
+      <h3>Configurações de preço</h3>
+      <div class="field"><label>Preço base (R$)</label><input id="pbase" type="number" step=".01" value="${settings.base}"></div>
+      <div class="field"><label>Funções incluídas</label><input id="pinc" type="number" value="${settings.included}"></div>
+      <div class="field"><label>Preço por função extra (R$)</label><input id="pextra" type="number" step=".01" value="${settings.extra}"></div>
+      <div class="field"><label>Adicional transparente (R$)</label><input id="ptrans" type="number" step=".01" value="${settings.transparent}"></div>
+      <button onclick="saveSettings()">Salvar preços</button>
+    `;
+  }
+}
+
+async function setStatus(id, status) {
+  const { error } = await db
+    .from('orders')
+    .update({ status })
+    .eq('id', id);
+
+  if (error) {
+    alert('Erro ao atualizar pedido: ' + error.message);
+    return;
+  }
+
+  await loadOrders();
+  adminTab('orders', document.querySelector('.tabs button'));
+}
+
+async function saveSettings() {
+  const updated = {
+    base_price: Number(document.getElementById('pbase').value),
+    included_features: Number(document.getElementById('pinc').value),
+    extra_feature_price: Number(document.getElementById('pextra').value),
+    transparent_extra_price: Number(document.getElementById('ptrans').value),
+    updated_at: new Date().toISOString()
+  };
+
+  if (Object.values(updated).some(v => typeof v === 'number' && (!Number.isFinite(v) || v < 0))) {
+    alert('Confira os valores. Eles não podem ser negativos.');
+    return;
+  }
+
+  const { error } = await db
+    .from('site_settings')
+    .update(updated)
+    .eq('id', 1);
+
+  if (error) {
+    alert('Erro ao salvar preços: ' + error.message);
+    return;
+  }
+
+  await loadSettings();
+  alert('Preços atualizados no banco de dados!');
+  adminTab('settings', document.querySelectorAll('.tabs button')[1]);
+}
+
+async function clientLogin() {
+  alert('A área do cliente ainda será integrada na próxima etapa.');
+}
+
+async function startApp() {
+  renderChecks();
+  await loadSettings();
+}
+
+startApp();
+</script>
+</body></html>
